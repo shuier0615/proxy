@@ -221,6 +221,6 @@ maxmemory-policy allkeys-lru
 本项目采用 MIT 许可证 - 查看 LICENSE 了解详情
 
 ## 联系方式
-- 项目地址: https://github.com/yourusername/proxy_pool
+- 项目地址: https://github.com/shuier0615/proxy
 - 问题反馈: Issues
 - 文档: Wiki
