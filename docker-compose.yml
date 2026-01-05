@@ -1,9 +1,10 @@
 version: '3.8'
 
 services:
+  # Redis 服务
   redis:
     image: redis:7-alpine
-    container_name: proxy_pool_redis
+    container_name: redis
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -17,37 +18,41 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+      start_period: 10s
 
-  api:
-    build: .
-    container_name: proxy_pool_api
+  # 代理池应用服务
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: proxy_pool
     restart: unless-stopped
     ports:
       - "5000:5000"
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
-      - API_HOST=0.0.0.0
-      - API_PORT=5000
-      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     depends_on:
       redis:
         condition: service_healthy
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - TZ=Asia/Shanghai
     volumes:
       - ./logs:/app/logs
+      - ./setting.py:/app/setting.py
     networks:
       - proxy_pool_network
-    command: python main.py
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/status"]
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
       interval: 30s
-      timeout: 5s
+      timeout: 10s
       retries: 3
+      start_period: 40s
 
+# 数据卷定义
+volumes:
+  redis_data:
+
+# 网络定义
 networks:
   proxy_pool_network:
     driver: bridge
-
-volumes:
-  redis_data:

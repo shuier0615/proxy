@@ -48,7 +48,21 @@ VALIDATE_TIMEOUT = 5
 ```bash
 python -m main.py
 ```
+## docker运行
+### 构建Docker镜像
 
+```bash
+docker build -t proxy-pool .
+
+	
+
+docker-compose up -d
+```
+
+运行Docker容器
+```bash
+docker run -d -p 5000:5000 --name proxy-container proxy-pool
+```
 ## API 使用
 
 ### 接口说明
