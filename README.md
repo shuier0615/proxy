@@ -29,10 +29,14 @@ utils/        # 工具模块
 ```
 ## 快速开始
 
-### 安装
+### 本地安装(需要Redis环境)
+[Redis安装教程](https://www.cnblogs.com/DoNetCShap/p/18385107)
 ```bash
+git clone https://github.com/shuier0615/proxy.git
+cd proxy
 pip install -r requirements.txt
 ```
+
 
 ### 配置
 修改 `setting.py` 中的以下参数：
@@ -48,14 +52,23 @@ VALIDATE_TIMEOUT = 5
 ```bash
 python -m main.py
 ```
+
+
 ## docker运行
+### liunx部署
+```bash
+1.更新软件源
+sudo apt update && sudo apt upgrade -y
+
+2.安装 python3-pip 和 setuptools
+sudo apt install python3-pip python3-setuptools
+```
 ### 构建Docker镜像
 
 ```bash
+1.构建镜像
 docker build -t proxy-pool .
-
-	
-
+2.运行docker-compose.yml
 docker-compose up -d
 ```
 
